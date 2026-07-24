@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🧭 Actividad en pareja · Lección 5 · Construye tu SPA con rutas</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="hero">
+  <div class="badge hot">MÓDULO 6 · LECCIÓN 5 · DÍA 1 · ACTIVIDAD EN PAREJA</div>
+  <h1>🧭 Construye tu propia SPA navegable</h1>
+  <p>
+    En <strong>parejas</strong>, van a construir un sitio de varias secciones con
+    <strong>Vue Router</strong>: un blog, una revista, un catálogo… <strong>de la temática que ustedes
+    quieran</strong>. La temática es libre; los <strong>requisitos técnicos no</strong>.
+    Acá no van a encontrar código para copiar: van a encontrar <strong>qué</strong> tiene que hacer
+    su aplicación y <strong>por qué</strong>. El cómo lo resuelven ustedes.
+  </p>
+</header>
+
+<main>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>📜 Las reglas</h2>
+    <ol>
+      <li><strong>Equipo de 2.</strong> No se turnan un teclado. Cada persona es <strong>dueña de sus archivos</strong> y los defiende.</li>
+      <li><strong>Ustedes eligen la temática.</strong> Si les gusta, lo van a hacer mejor. Más abajo hay ideas por si no se les ocurre nada.</li>
+      <li><strong>Un solo repositorio Git</strong>, con commits de <strong>los dos</strong> integrantes en el historial.</li>
+      <li><strong>Vue 3 + Vue Router + Composition API</strong> con <code>&lt;script setup&gt;</code>. Nada de Options API.</li>
+      <li><strong>Cero código regalado.</strong> Pueden y deben volver a la guía de hoy y a sus apuntes de las lecciones anteriores.</li>
+    </ol>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>🎨 Elijan su temática</h2>
+    <p>
+      Cualquier tema sirve, siempre que cumpla una condición: tiene que tener
+      <strong>una lista de cosas</strong> y <strong>cada cosa debe tener su ficha de detalle</strong>,
+      y esa ficha debe poder mirarse desde <strong>tres ángulos distintos</strong>. Si su idea cumple eso,
+      es viable. Si no, elijan otra.
+    </p>
+
+    <div class="temas">
+      <div class="tema"><span class="emoji">📝</span><strong>Blog técnico</strong><span>Artículos → contenido, comentarios, autor</span></div>
+      <div class="tema"><span class="emoji">🎮</span><strong>Guía de videojuegos</strong><span>Juegos → ficha, requisitos, reseñas</span></div>
+      <div class="tema"><span class="emoji">🍜</span><strong>Recetario</strong><span>Recetas → preparación, ingredientes, tips</span></div>
+      <div class="tema"><span class="emoji">🎸</span><strong>Revista de música</strong><span>Discos → reseña, canciones, banda</span></div>
+      <div class="tema"><span class="emoji">🏔️</span><strong>Guía de trekking</strong><span>Rutas → descripción, mapa, equipamiento</span></div>
+      <div class="tema"><span class="emoji">🐕</span><strong>Adopción de mascotas</strong><span>Animales → ficha, salud, cómo adoptar</span></div>
+      <div class="tema"><span class="emoji">📚</span><strong>Club de lectura</strong><span>Libros → sinopsis, personajes, opiniones</span></div>
+      <div class="tema"><span class="emoji">☕</span><strong>Guía de cafeterías</strong><span>Locales → info, carta, reseñas</span></div>
+    </div>
+
+    <div class="warn">
+      <strong>Sobre los datos:</strong> no pierdan energía buscando una API. Inventen sus propios datos
+      en un archivo aparte. Con <strong>8 a 12 elementos</strong> les sobra. Lo que se evalúa hoy es
+      <strong>cómo navega</strong> su sitio, no de dónde salen los datos.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>🗺️ El mapa de rutas obligatorio</h2>
+    <p>
+      Traduzcan esta tabla a su temática. Los ejemplos de la columna izquierda son de un blog;
+      ustedes ponen los nombres que correspondan a lo suyo.
+      <strong>Las 8 filas son obligatorias.</strong>
+    </p>
+
+    <table class="rutas">
+      <tr>
+        <th>Dirección (ejemplo)</th>
+        <th>Qué muestra</th>
+        <th>Qué concepto están demostrando</th>
+      </tr>
+      <tr>
+        <td>/</td>
+        <td>Nada propio: manda al usuario a la portada real</td>
+        <td><strong>Redirect</strong></td>
+      </tr>
+      <tr>
+        <td>/articulos</td>
+        <td>La lista completa de elementos</td>
+        <td><strong>Ruta estática</strong></td>
+      </tr>
+      <tr>
+        <td>/posts &nbsp;·&nbsp; /blog</td>
+        <td>Exactamente lo mismo que la anterior, pero la dirección escrita no cambia</td>
+        <td><strong>Alias</strong> (mínimo dos)</td>
+      </tr>
+      <tr>
+        <td>/articulos?buscar=&hellip;</td>
+        <td>La misma lista, filtrada</td>
+        <td><strong>Parámetros de búsqueda</strong> en la dirección</td>
+      </tr>
+      <tr>
+        <td>/articulo/<em>identificador</em></td>
+        <td>La ficha de UN elemento</td>
+        <td><strong>Ruta dinámica</strong></td>
+      </tr>
+      <tr>
+        <td>/articulo/<em>id</em> &nbsp;(sin nada más)</td>
+        <td>Primera pestaña de la ficha</td>
+        <td rowspan="3"><strong>Rutas anidadas:</strong> tres pestañas dentro de la ficha, cada una con su propia dirección</td>
+      </tr>
+      <tr>
+        <td>/articulo/<em>id</em>/comentarios</td>
+        <td>Segunda pestaña</td>
+      </tr>
+      <tr>
+        <td>/articulo/<em>id</em>/autor</td>
+        <td>Tercera pestaña</td>
+      </tr>
+      <tr>
+        <td>/sobre-nosotros</td>
+        <td>Página informativa del equipo</td>
+        <td><strong>Ruta estática</strong></td>
+      </tr>
+      <tr>
+        <td><em>cualquier cosa inventada</em></td>
+        <td>Una página de "no encontrado" bonita, con salida hacia la portada</td>
+        <td><strong>404</strong></td>
+      </tr>
+    </table>
+
+    <details class="pista">
+      <summary>Pista · sobre el orden de las rutas</summary>
+      <p>
+        Las rutas se revisan de arriba abajo y gana la primera que calza. Hay una que, si la
+        ponen en el lugar equivocado, <strong>se come todas las demás</strong> y su sitio entero
+        se convierte en una sola página. Piensen cuál es y dónde tiene que ir.
+      </p>
+    </details>
+
+    <details class="pista">
+      <summary>Pista · redirect y alias parecen lo mismo, pero no lo son</summary>
+      <p>
+        La diferencia se ve en <strong>la barra de direcciones</strong>. Uno de los dos la
+        <strong>cambia</strong> por la dirección de destino; el otro <strong>la deja tal como el
+        usuario la escribió</strong>. Antes de programar, decidan cuál necesitan en cada caso y
+        escríbanlo. Después comprueben que se comporta como esperaban.
+      </p>
+    </details>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>✅ Requisitos técnicos</h2>
+    <p>Esto es lo que su proyecto tiene que cumplir. Úsenlo como lista de control.</p>
+
+    <h3 class="sub">Navegación</h3>
+    <ul class="checklist">
+      <li>Un menú principal <strong>siempre visible</strong> que no se recarga al navegar.</li>
+      <li>El enlace de la sección en la que estoy se <strong>ve distinto</strong> a los demás. Sin escribir lógica para eso: el router ya se los da.</li>
+      <li>Todos los enlaces del menú navegan <strong>por el nombre de la ruta</strong>, no escribiendo la dirección a mano. Tienen que poder cambiar una dirección en un solo archivo sin romper nada.</li>
+      <li>Al menos <strong>una navegación disparada desde JavaScript</strong>, no desde un enlace: por ejemplo al enviar el buscador, o un botón "volver".</li>
+      <li>Una <strong>transición visual</strong> al cambiar de sección.</li>
+    </ul>
+
+    <h3 class="sub">La ficha de detalle</h3>
+    <ul class="checklist">
+      <li>El componente de la ficha <strong>no puede leer la ruta por dentro</strong>. Tiene que recibir el identificador <strong>como una propiedad</strong>, igual que cualquier otro componente. Se configura en el router.</li>
+      <li>Si el usuario salta <strong>de una ficha a otra</strong> sin volver a la lista, el contenido tiene que actualizarse. <strong>Prueben esto sí o sí</strong>, es donde casi todos fallan.</li>
+      <li>Si piden un identificador que no existe, la ficha muestra un <strong>mensaje humano</strong>, no una pantalla rota ni un error técnico.</li>
+      <li>Las tres pestañas son <strong>rutas de verdad</strong>: el botón "atrás" del navegador tiene que moverse entre ellas.</li>
+    </ul>
+
+    <h3 class="sub">Lo que ya sabían de las lecciones anteriores</h3>
+    <ul class="checklist">
+      <li>Al menos <strong>un componente reutilizable</strong> que reciba propiedades y <strong>emita un evento</strong> hacia su padre.</li>
+      <li>Al menos <strong>un valor calculado</strong> a partir de otros (un total, un promedio, un conteo, un filtro).</li>
+      <li>Un <strong>campo de formulario enlazado</strong> al estado (el buscador sirve).</li>
+      <li>Recorrido de listas con su identificador único correspondiente.</li>
+      <li><strong>Estado de carga</strong>: nada de pantallas congeladas mientras "llegan" los datos.</li>
+      <li><strong>Estado vacío</strong>: cuando una búsqueda no encuentra nada, un mensaje amable <strong>y un botón para salir</strong> de ahí. Un "no hay resultados" a secas es un callejón sin salida.</li>
+    </ul>
+
+    <h3 class="sub">Accesibilidad y presentación</h3>
+    <ul class="checklist">
+      <li>Los botones que sólo tienen un icono necesitan una <strong>etiqueta accesible</strong>.</li>
+      <li>El <strong>foco del teclado tiene que verse</strong>. Recorran todo el sitio usando sólo Tab: si se pierden, está mal.</li>
+      <li>Etiquetas HTML con significado, no <code>&lt;div&gt;</code> para todo.</li>
+      <li>Contraste suficiente para leer cómodamente.</li>
+    </ul>
+
+    <details class="pista">
+      <summary>Pista · la trampa de saltar de una ficha a otra</summary>
+      <p>
+        Cuando navegan entre dos direcciones que usan <strong>el mismo componente</strong> y sólo
+        cambia el identificador, Vue Router <strong>reutiliza ese componente</strong> en vez de crear
+        uno nuevo. ¿Qué implica eso para el código que ustedes escribieron pensando "esto se ejecuta
+        cuando el componente aparece"? Ahí está el problema. Y la solución es otra herramienta de
+        Vue que ya conocen desde la lección pasada.
+      </p>
+    </details>
+
+    <details class="pista">
+      <summary>Pista · el detalle de las pestañas que se ven todas encendidas</summary>
+      <p>
+        El router marca los enlaces activos de <strong>dos formas distintas</strong>: una es más
+        amplia y otra es estricta. Si eligen la amplia para las pestañas, es probable que la primera
+        pestaña les quede resaltada <strong>en las tres</strong>. Averigüen por qué pasa y cuál de las
+        dos les conviene en cada lugar del sitio: el menú principal y las pestañas
+        <strong>no necesariamente usan la misma</strong>.
+      </p>
+    </details>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>👥 Cómo se reparten el trabajo</h2>
+    <p>
+      Repártanse por <strong>archivos</strong>, no por "tú escribe y yo miro". Así los dos programan
+      y los conflictos en Git son mínimos. Decidan quién es A y quién es B.
+    </p>
+
+    <div class="split">
+      <div class="persona a">
+        <h3>🔵 Persona A — La navegación y la lista</h3>
+        <div class="rol">Dueña del router y de la entrada al sitio</div>
+        <ul class="checklist">
+          <li>Crear el proyecto e instalar todo.</li>
+          <li>Definir el <strong>archivo de rutas completo</strong>, con las 8 filas de la tabla.</li>
+          <li>El componente marco: menú siempre visible, el hueco donde se dibujan las vistas y la transición.</li>
+          <li>Los estilos de los enlaces activos.</li>
+          <li>La <strong>vista de lista</strong> con el buscador y el filtro reflejados en la dirección.</li>
+          <li>La vista de <strong>"sobre nosotros"</strong>.</li>
+          <li>La vista de <strong>404</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="persona b">
+        <h3>🟣 Persona B — La ficha y sus pestañas</h3>
+        <div class="rol">Dueña del detalle y de los datos</div>
+        <ul class="checklist">
+          <li>Inventar el <strong>archivo de datos</strong> (8 a 12 elementos, con todo lo que las 3 pestañas necesiten).</li>
+          <li>La función que <strong>simula traer los datos</strong> con un pequeño retardo.</li>
+          <li>La <strong>vista de ficha</strong>: recibe el identificador como propiedad y reacciona cuando cambia.</li>
+          <li>El menú de <strong>pestañas</strong> y el hueco donde se dibujan.</li>
+          <li>Las <strong>tres vistas de pestaña</strong>.</li>
+          <li>El <strong>componente reutilizable de tarjeta</strong> que usa la Persona A en la lista.</li>
+          <li>El manejo del caso "este identificador no existe".</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="concept">
+      <strong>Acuerden esto ANTES de escribir una sola línea</strong>, o van a perder tiempo peleando
+      con Git y con nombres que no calzan:
+      <ol style="margin:.5rem 0">
+        <li>Los <strong>nombres exactos de las rutas</strong>. Los dos van a enlazar hacia ellas.</li>
+        <li>La <strong>forma exacta de un elemento</strong> de datos: qué campos tiene y cómo se llaman.</li>
+        <li>Qué <strong>propiedades recibe</strong> el componente de tarjeta y qué <strong>evento emite</strong>.</li>
+        <li>Los nombres de las <strong>clases CSS compartidas</strong>.</li>
+      </ol>
+      Escríbanlo en un archivo del repo. Eso es un contrato: si después alguien lo cambia, avisa.
+    </div>
+
+    <div class="tip">
+      <strong>Truco para no bloquearse:</strong> la Persona B necesita rutas que todavía no existen y
+      la Persona A necesita datos que todavía no existen. Solución: apenas empiecen, la Persona A
+      crea <strong>todas</strong> las rutas apuntando a vistas vacías con un título, y la Persona B
+      crea el archivo de datos con <strong>dos</strong> elementos de mentira. Con eso los dos avanzan
+      en paralelo desde el minuto uno.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>🪜 En qué orden atacarlo</h2>
+    <p>No empiecen por lo bonito. Empiecen por lo que sostiene todo lo demás.</p>
+
+    <div class="fase">
+      <h3>Fase 1 · Que navegue, aunque esté feo</h3>
+      <div class="meta">Los dos, juntos frente a una pantalla</div>
+      <ul>
+        <li>Proyecto creado, router instalado y conectado.</li>
+        <li>Todas las rutas declaradas apuntando a vistas que sólo tienen un título.</li>
+        <li>El menú funcionando.</li>
+      </ul>
+      <p><strong>Meta:</strong> pueden recorrer el sitio completo, la dirección cambia y la página nunca se recarga. Sin datos, sin estilos, sin nada. <strong>Recién ahí se separan.</strong></p>
+    </div>
+
+    <div class="fase">
+      <h3>Fase 2 · Que muestre datos</h3>
+      <div class="meta">Cada uno en lo suyo</div>
+      <ul>
+        <li>A: la lista mostrando las tarjetas de verdad.</li>
+        <li>B: la ficha mostrando un elemento de verdad, y sus tres pestañas.</li>
+      </ul>
+      <p><strong>Meta:</strong> desde la lista puedo entrar a cualquier ficha y ver sus tres pestañas.</p>
+    </div>
+
+    <div class="fase">
+      <h3>Fase 3 · Los casos difíciles</h3>
+      <div class="meta">Cada uno en lo suyo</div>
+      <ul>
+        <li>A: el buscador reflejado en la dirección, el redirect, los alias y el 404.</li>
+        <li>B: saltar de una ficha a otra sin pasar por la lista, y el identificador inexistente.</li>
+      </ul>
+      <p><strong>Meta:</strong> el sitio aguanta que le hagan cosas raras.</p>
+    </div>
+
+    <div class="fase">
+      <h3>Fase 4 · Estados, accesibilidad y presentación</h3>
+      <div class="meta">Los dos</div>
+      <ul>
+        <li>Estados de carga y vacío.</li>
+        <li>Transiciones.</li>
+        <li>Recorrido completo con Tab.</li>
+        <li>Estilos finales.</li>
+      </ul>
+    </div>
+
+    <div class="fase">
+      <h3>Fase 5 · Prueba cruzada</h3>
+      <div class="meta">Los dos, y esta fase no se salta</div>
+      <p>
+        Cada uno prueba <strong>lo que hizo el otro</strong>, con la lista de más abajo en la mano.
+        Uno siempre es ciego a sus propios errores.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>🧪 Prueba de fuego</h2>
+    <p>
+      Antes de decir "está listo", háganle esto a su sitio. Si algo falla, todavía no está listo.
+    </p>
+    <ul class="checklist">
+      <li>Entro a la dirección raíz. ¿Me manda a la portada correcta?</li>
+      <li>Escribo los dos alias. ¿Veo el mismo contenido? ¿Y la barra de direcciones quedó como yo la escribí?</li>
+      <li>Escribo una dirección inventada. ¿Aparece el 404 con una salida?</li>
+      <li>Escribo una dirección inventada con varios tramos separados por barras. ¿También cae en el 404?</li>
+      <li>Busco algo en el buscador. <strong>Copio la dirección, la abro en otra pestaña.</strong> ¿Veo el mismo resultado filtrado?</li>
+      <li>Busco algo que no existe. ¿Hay mensaje amable y botón de salida?</li>
+      <li>Entro a una ficha y me muevo por las tres pestañas. ¿Cambia la dirección? ¿Se resalta <strong>sólo una</strong> pestaña por vez?</li>
+      <li>Estando en una pestaña, aprieto <strong>"atrás"</strong>. ¿Vuelvo a la pestaña anterior?</li>
+      <li><strong>La prueba clave:</strong> desde una ficha, entro directamente a otra ficha distinta sin pasar por la lista. ¿Se actualizó todo el contenido, o quedó algo del anterior?</li>
+      <li>Escribo la dirección de una ficha con un identificador que no existe. ¿Mensaje humano?</li>
+      <li>Recorro el sitio entero usando <strong>sólo el teclado</strong>. ¿Se ve siempre dónde está el foco?</li>
+      <li>Abro el sitio en el ancho de un teléfono. ¿Se lee todo? ¿Nada se sale de la pantalla?</li>
+      <li><strong>Miro la consola del navegador.</strong> ¿Hay algún aviso en amarillo o en rojo? Los avisos no son decorativos: son errores esperando su turno.</li>
+    </ul>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>📊 Cómo se van a evaluar</h2>
+    <table class="rubrica">
+      <tr><th>Qué se mira</th><th>Peso</th></tr>
+      <tr><td>Las 8 rutas de la tabla funcionan, incluidas anidadas, redirect, alias y 404</td><td>35%</td></tr>
+      <tr><td>La ficha recibe el identificador como propiedad y se actualiza al saltar entre fichas</td><td>20%</td></tr>
+      <tr><td>El buscador vive en la dirección y el link es compartible</td><td>15%</td></tr>
+      <tr><td>Estados de carga, vacío y error resueltos con criterio</td><td>10%</td></tr>
+      <tr><td>Accesibilidad: foco visible, etiquetas accesibles, HTML con significado</td><td>10%</td></tr>
+      <tr><td>Git con commits reales de los dos integrantes</td><td>10%</td></tr>
+    </table>
+
+    <div class="warn">
+      <strong>Se descuenta</strong> por: navegación falsa con <code>v-if</code>, enlaces con la
+      dirección escrita a mano en vez del nombre de la ruta, avisos sin resolver en la consola,
+      y componentes de vista que espían la ruta cuando deberían recibir una propiedad.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>🚀 Si les sobra tiempo</h2>
+    <p>Sólo después de que <strong>todo</strong> lo anterior esté funcionando.</p>
+    <ul>
+      <li>Que las secciones pesadas <strong>se descarguen sólo cuando alguien entra a ellas</strong>, en vez de venir todas en el paquete inicial.</li>
+      <li>Una ruta que liste los elementos <strong>de una sola categoría</strong>, con la categoría viajando en la dirección.</li>
+      <li>Guardar algo del usuario (favoritos, leídos) para que <strong>siga ahí después de recargar</strong>.</li>
+      <li>Que al cambiar de sección la página <strong>vuelva arriba sola</strong>, pero que al apretar "atrás" respete dónde estaba el usuario.</li>
+      <li>Averiguar qué son los <strong>guardias de navegación</strong> y usar uno para proteger una sección.</li>
+      <li>Publicar el sitio en internet. Ojo: hay un detalle del modo de direcciones que puede darles un error al recargar. Investiguen antes de frustrarse.</li>
+    </ul>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>📦 Qué entregan</h2>
+    <ul class="checklist">
+      <li>El enlace al repositorio, con commits de los dos.</li>
+      <li>Un archivo <code>README.md</code> con: la temática elegida, cómo levantar el proyecto, la <strong>tabla con las rutas que construyeron</strong> y quién hizo qué.</li>
+      <li>Una explicación corta, escrita por ustedes: <strong>por qué usaron redirect en un caso y alias en el otro</strong>. En sus palabras.</li>
+      <li>La dificultad más grande que tuvieron y cómo la resolvieron.</li>
+    </ul>
+
+    <div class="tip">
+      <strong>Ese último punto no es relleno.</strong> Explicar un problema que resolviste es la
+      diferencia entre haber copiado algo y haberlo entendido. En una entrevista de trabajo te van a
+      preguntar exactamente eso.
+    </div>
+  </section>
+
+</main>
+
+<footer style="padding:2rem;text-align:center;color:#94a3b8;border-top:1px solid #334155;font-size:.88rem">
+  Módulo 6 · Lección 5 · Actividad en pareja — Vue 3 + Vue Router + Composition API
+</footer>
+
+</body>
+</html>
