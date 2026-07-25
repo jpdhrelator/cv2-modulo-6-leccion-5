@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎮 Misión · Lección 5 · Día 2 · El Teletransportador (useRouter & useRoute)</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="hero">
+  <div class="badge hot">MÓDULO 6 · LECCIÓN 5 · DÍA 2 · MISIÓN INDIVIDUAL</div>
+  <h1>🎮 El Teletransportador</h1>
+  <p>
+    Hoy construyes tu propia <strong>colección navegable</strong> y la conviertes en un juego de
+    exploración. Pero acá hay un giro: <strong>casi toda la navegación la vas a hacer por código</strong>,
+    con <code>useRouter</code> y <code>useRoute</code>. Nada de menús aburridos. Cada concepto del día
+    es un <strong>PODER</strong> que tienes que desbloquear. Reúne los 6 poderes, derrota al jefe final
+    y tu app queda lista. La temática es <strong>libre</strong>; los poderes <strong>no</strong>.
+  </p>
+</header>
+
+<main>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>📜 Las reglas del juego</h2>
+    <ol>
+      <li><strong>Individual.</strong> Cada uno con su repo. Se puede consultar con el compañero, pero el código es tuyo.</li>
+      <li><strong>Vue 3 + Vue Router + Composition API</strong> con <code>&lt;script setup&gt;</code>. Nada de Options API.</li>
+      <li><strong>Tienes la guía de hoy al lado.</strong> No es hacer memoria: es aplicar. Vuelve a la guía del Día 2 todas las veces que necesites.</li>
+      <li><strong>Cero código regalado acá.</strong> Te digo QUÉ poder desbloquear y POR QUÉ importa. El cómo lo escribes tú.</li>
+    </ol>
+
+    <div class="prohibido">
+      <strong>Prohibido:</strong> navegar solo con <code>&lt;router-link&gt;</code> por todos lados.
+      Eso ya lo dominaste el Día 1. Hoy el foco es la <strong>navegación programática</strong>: botones
+      que llaman a <code>router.push()</code>, <code>router.back()</code>, y vistas que leen la URL con
+      <code>route.params</code> y <code>route.query</code>. Si tu app no usa <code>useRouter</code> ni
+      <code>useRoute</code>, no cumpliste la misión.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>🎨 Elige tu colección</h2>
+    <p>
+      Necesitas una <strong>colección de cosas</strong> donde cada cosa tenga su <strong>ficha</strong>
+      y se pueda <strong>ordenar/filtrar</strong>. Elige algo que te divierta: si te gusta, lo haces mejor.
+    </p>
+
+    <div class="ideas">
+      <div class="idea"><span class="emoji">🃏</span><strong>Cartas / TCG</strong><span>por rareza, ataque, tipo</span></div>
+      <div class="idea"><span class="emoji">👾</span><strong>Bestiario</strong><span>criaturas por elemento y nivel</span></div>
+      <div class="idea"><span class="emoji">🚗</span><strong>Garage</strong><span>autos por marca y velocidad</span></div>
+      <div class="idea"><span class="emoji">🎸</span><strong>Discos</strong><span>álbumes por género y año</span></div>
+      <div class="idea"><span class="emoji">🍔</span><strong>Menú</strong><span>platos por categoría y precio</span></div>
+      <div class="idea"><span class="emoji">🪐</span><strong>Planetas</strong><span>por galaxia y tamaño</span></div>
+      <div class="idea"><span class="emoji">🦸</span><strong>Superhéroes</strong><span>por bando y poder</span></div>
+      <div class="idea"><span class="emoji">🍄</span><strong>Ítems de juego</strong><span>por rareza y efecto</span></div>
+    </div>
+
+    <div class="warn">
+      <strong>Los datos los inventas tú.</strong> Un archivo <code>datos.js</code> con <strong>8 a 12
+      elementos</strong> basta. Cada elemento necesita mínimo: un <code>id</code> único (número), un
+      <code>nombre</code>, un <code>emoji</code> o imagen, una <strong>categoría</strong> (tipo, rareza,
+      género…) y algún <strong>número</strong> comparable (precio, ataque, nivel). Hoy NO se evalúa de
+      dónde salen los datos: se evalúa cómo NAVEGA tu app.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>🗺️ El mapa mínimo de rutas</h2>
+    <p>Solo necesitas <strong>tres rutas</strong>. La magia de hoy no está en tener muchas, sino en cómo te mueves entre ellas.</p>
+
+    <table class="rutas">
+      <tr><th>Dirección (ejemplo)</th><th>Qué muestra</th><th>Concepto del día</th></tr>
+      <tr><td>/coleccion</td><td>La lista completa (y filtrada por búsqueda)</td><td><strong>route.query</strong></td></tr>
+      <tr><td>/item/<em>id</em></td><td>La ficha de UN elemento</td><td><strong>route.params</strong> (ruta dinámica <code>:id</code>)</td></tr>
+      <tr><td>/</td><td>Manda a <code>/coleccion</code></td><td>redirect (bonus del Día 1)</td></tr>
+    </table>
+
+    <div class="url-bar"><span class="dot"></span><span class="dot g"></span><span class="dot gr"></span>&nbsp;/item/<b>3</b> &nbsp;·&nbsp; /coleccion<i>?buscar=fuego</i></div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>⚡ Los 6 poderes a desbloquear</h2>
+    <p>Cada poder es una funcionalidad que usa lo de hoy. Están ordenados de menor a mayor dificultad. Consíguelos en orden.</p>
+
+    <div class="poder">
+      <span class="xp">+10 XP</span>
+      <span class="herramienta">router.push('/item/' + id)</span>
+      <h3>🌀 Poder 1 · Teletransporte</h3>
+      <p>En la lista, cada elemento tiene un botón <strong>"Ver"</strong>. Al hacer clic, tu código
+      lleva al usuario a la ficha de ESE elemento. <strong>Sin usar <code>&lt;router-link&gt;</code></strong>:
+      esto lo dispara una función con <code>useRouter</code>. Ese es el punto.</p>
+    </div>
+
+    <div class="poder">
+      <span class="xp">+10 XP</span>
+      <span class="herramienta">route.params.id</span>
+      <h3>📍 Poder 2 · El GPS</h3>
+      <p>La ficha lee <strong>qué elemento mostrar</strong> desde la URL. Con <code>useRoute</code>
+      obtienes el <code>id</code> y buscas el elemento en tus datos. <strong>Cuidado:</strong> ese id
+      llega como texto. Si tu <code>id</code> en los datos es número, algo no va a calzar. Tú sabes
+      qué hacer (lo dice la guía en rojo).</p>
+    </div>
+
+    <div class="poder">
+      <span class="xp">+15 XP</span>
+      <span class="herramienta">route.query.buscar</span>
+      <h3>🔍 Poder 3 · El Radar</h3>
+      <p>Un buscador arriba de la lista. Cuando el usuario escribe y busca, el texto se guarda
+      <strong>EN LA URL</strong> (<code>?buscar=...</code>), no en una variable suelta. La lista mostrada
+      se <strong>deriva</strong> de la URL con un <code>computed</code>. Prueba de que lo hiciste bien:
+      copias el link, lo abres en otra pestaña y ves la misma búsqueda. <strong>La URL es la fuente de la verdad.</strong></p>
+    </div>
+
+    <div class="poder">
+      <span class="xp">+15 XP</span>
+      <span class="herramienta">router.back()</span>
+      <h3>↩️ Poder 4 · El Regreso</h3>
+      <p>En la ficha, un botón <strong>"← Volver"</strong> que devuelve al usuario a donde estaba,
+      usando el historial del navegador. No lo mandes con un link fijo a la lista: usa
+      <code>router.back()</code> y siente la diferencia. Piensa: ¿qué pasa si el usuario llegó a la
+      ficha desde una búsqueda? Con <code>back()</code> vuelve a SU búsqueda, no a la lista pelada.</p>
+    </div>
+
+    <div class="poder">
+      <span class="xp">+20 XP</span>
+      <span class="herramienta">router.push({ name, params })</span>
+      <h3>🎲 Poder 5 · El Dado de la Suerte</h3>
+      <p>Un botón <strong>"🎲 Sorpréndeme"</strong> (ponlo donde quieras) que teletransporta a una
+      ficha <strong>al azar</strong>. Elige un id random de tu colección y navega ahí por código.
+      Úsalo por <code>name</code> y <code>params</code>, no armando el string a mano. Es el mismo
+      poder 1 pero elegante y divertido.</p>
+    </div>
+
+    <div class="poder boss">
+      <span class="xp">+30 XP</span>
+      <span class="herramienta">watch(() =&gt; route.params.id, ...)</span>
+      <h3>👹 JEFE FINAL · El Bug del Clon</h3>
+      <p>En la ficha, agrega dos botones: <strong>"◀ Anterior"</strong> y <strong>"Siguiente ▶"</strong>,
+      que te llevan a la ficha del id vecino (id − 1, id + 1) con <code>router.push</code>. Suena fácil…
+      hasta que lo pruebas: <strong>la URL cambia, pero el contenido se queda pegado en el elemento
+      anterior.</strong> ¿Por qué? Porque Vue Router <strong>reutiliza el mismo componente</strong> y tu
+      lógica de "cargar el elemento" no se vuelve a ejecutar. Ese es el jefe. Derrótalo con la herramienta
+      que ves arriba en la etiqueta. Si no lo pruebas saltando entre fichas, no sabrás si lo venciste.</p>
+    </div>
+
+    <div class="tip">
+      <strong>¿Cómo sé cuántos XP llevo?</strong> Los 6 poderes suman 100 XP. Con los 5 primeros
+      (70 XP) tu app ya es sólida. El jefe final (30 XP) es lo que separa al que "usó el router" del
+      que <strong>entendió</strong> el router. Ve por él.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>🪜 Niveles: en qué orden atacarlo</h2>
+    <p>No empieces por lo bonito. Empieza por lo que sostiene todo.</p>
+
+    <div class="niveles">
+      <div class="nivel n1">
+        <div class="lvl">1</div>
+        <div>
+          <h4>Que se mueva, aunque esté feo</h4>
+          <p>Proyecto creado, router instalado y conectado en <code>main.js</code>. Las 3 rutas declaradas. La lista muestra tus datos con un botón "Ver" que teletransporta (Poder 1). La ficha lee el id (Poder 2). <strong>Meta:</strong> entro a cualquier ficha desde la lista.</p>
+        </div>
+      </div>
+      <div class="nivel n2">
+        <div class="lvl">2</div>
+        <div>
+          <h4>Que sea navegable de verdad</h4>
+          <p>El Radar (Poder 3) y el Regreso (Poder 4). <strong>Meta:</strong> busco algo, el link es compartible, entro a una ficha y vuelvo a mi búsqueda.</p>
+        </div>
+      </div>
+      <div class="nivel n3">
+        <div class="lvl">3</div>
+        <div>
+          <h4>Que sea entretenido</h4>
+          <p>El Dado (Poder 5) y el JEFE FINAL (anterior/siguiente + watch). <strong>Meta:</strong> puedo recorrer toda la colección saltando de ficha en ficha y el contenido SIEMPRE se actualiza.</p>
+        </div>
+      </div>
+      <div class="nivel n4">
+        <div class="lvl">★</div>
+        <div>
+          <h4>Que se vea profesional</h4>
+          <p>Estado vacío (búsqueda sin resultados con botón de salida), caso "id no existe" con mensaje humano, foco de teclado visible, y estilos finales. <strong>Meta:</strong> aguanta que le hagan cosas raras.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>🧪 Prueba de fuego</h2>
+    <p>Antes de decir "listo", hazle esto a tu app. Si algo falla, todavía no está listo.</p>
+    <ul class="checklist">
+      <li>Desde la lista, hago clic en "Ver". ¿Me lleva a la ficha correcta y la URL cambió a <code>/item/…</code>?</li>
+      <li>Escribo <code>/item/2</code> a mano en la barra. ¿Se ve el elemento 2? (Prueba de que lees <code>route.params</code>, no un dato guardado.)</li>
+      <li>Busco algo. <strong>Copio la URL, la abro en otra pestaña.</strong> ¿Veo la misma búsqueda filtrada?</li>
+      <li>Busco algo que no existe. ¿Mensaje amable <strong>y</strong> botón para salir?</li>
+      <li>Entro a una ficha desde una búsqueda y aprieto "← Volver". ¿Vuelvo a MI búsqueda o a la lista pelada?</li>
+      <li>Aprieto "🎲 Sorpréndeme" varias veces. ¿Cae en fichas distintas y la URL cambia cada vez?</li>
+      <li><strong>La prueba clave (el jefe):</strong> en una ficha, aprieto "Siguiente ▶" varias veces seguidas. ¿El contenido se actualiza SIEMPRE, o se queda pegado?</li>
+      <li>Escribo <code>/item/9999</code>. ¿Mensaje humano, o pantalla rota?</li>
+      <li>Recorro todo con <strong>solo el teclado</strong> (Tab). ¿Se ve dónde está el foco?</li>
+      <li><strong>Miro la consola.</strong> ¿Hay avisos en amarillo o rojo? Un aviso es un error esperando su turno.</li>
+    </ul>
+
+    <details class="pista">
+      <summary>Pista · el jefe final se ve, no se adivina</summary>
+      <p>
+        Muchos "arreglan" el jefe sin haberlo visto nunca, y en realidad no lo arreglaron. Para
+        <strong>verlo</strong>: carga los datos del elemento en una variable (no directo en el template)
+        dentro de algo que creas que "corre al entrar a la ficha". Navega de <code>/item/1</code> a
+        <code>/item/2</code> con tu botón "Siguiente". Si el título de arriba cambia pero los datos de
+        abajo no, ahí está el bug, mirándote. Ahora sí, arréglalo.
+      </p>
+    </details>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>📊 Cómo se evalúa</h2>
+    <table class="rubrica">
+      <tr><th>Qué se mira</th><th>Peso</th></tr>
+      <tr><td>Navegación programática con <code>router.push</code> (teletransporte + dado)</td><td>20%</td></tr>
+      <tr><td>La ficha lee <code>route.params</code> y convierte bien el id (número vs texto)</td><td>20%</td></tr>
+      <tr><td>El buscador vive en <code>route.query</code> y el link es compartible</td><td>20%</td></tr>
+      <tr><td><strong>JEFE FINAL:</strong> saltar entre fichas actualiza el contenido (<code>watch</code>)</td><td>25%</td></tr>
+      <tr><td>Estados vacío / id inexistente, accesibilidad y presentación</td><td>15%</td></tr>
+    </table>
+
+    <div class="warn">
+      <strong>Se descuenta</strong> por: navegar con <code>&lt;router-link&gt;</code> donde se pedía
+      código, <strong>desestructurar</strong> el <code>useRoute</code> (<code>const { params } = useRoute()</code>
+      rompe la reactividad), comparar el id sin convertirlo, y avisos sin resolver en la consola.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="card">
+    <h2>🚀 Si te sobra tiempo (XP extra)</h2>
+    <p>Solo después de que los 6 poderes funcionen.</p>
+    <ul>
+      <li><strong>Filtro por categoría en la URL:</strong> además de <code>?buscar=</code>, agrega <code>?tipo=fuego</code> y combínalos.</li>
+      <li><strong>Contador de posición:</strong> en la ficha, muestra "Elemento 3 de 12" usando el id y el largo de tu colección.</li>
+      <li><strong>Los vecinos que dan la vuelta:</strong> que "Siguiente" en el último elemento vuelva al primero (y "Anterior" en el primero, al último).</li>
+      <li><strong>Deshabilitar en los bordes:</strong> o, en vez de dar la vuelta, que los botones se desactiven en el primer/último elemento.</li>
+      <li><strong>Favoritos que sobreviven:</strong> marca elementos y que sigan ahí después de recargar.</li>
+    </ul>
+  </section>
+
+
+</main>
+
+<footer style="padding:2rem;text-align:center;color:#94a3b8;border-top:1px solid #334155;font-size:.88rem">
+  Módulo 6 · Lección 5 · Día 2 · Misión individual — <code>useRouter</code> &amp; <code>useRoute</code> con Composition API
+</footer>
+
+</body>
+</html>
